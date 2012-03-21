@@ -98,6 +98,13 @@ function package_download() {
   curl $package -s -o - | tar xzf - -C $location
 }
 
+function download_phantom() {
+  location="phantomjs"
+  mkdir -p $location
+  package="http://phantomjs.googlecode.com/files/phantomjs-1.4.1-linux-x86_64-dynamic.tar.gz"
+  curl $package -s -o - | tar xzf - -C $location
+}
+
 bootstrap_node=$(mktmpdir bootstrap_node)
 package_download "nodejs" "0.4.7" $bootstrap_node
 
@@ -141,6 +148,9 @@ echo "-----> Fetching Node.js binaries"
 package_download "nodejs" "${NODE_VERSION}" "${VENDORED_NODE}"
 package_download "npm" "${NPM_VERSION}" "${VENDORED_NPM}"
 package_download "scons" "${SCONS_VERSION}" "${VENDORED_SCONS}"
+
+echo "-----> Downloading phantomjs"
+download_phantom
 
 # vendor node into the slug
 PATH="$BUILD_DIR/bin:$PATH"
